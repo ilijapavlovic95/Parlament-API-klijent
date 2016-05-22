@@ -99,8 +99,8 @@ public class PoslanikTableModel extends AbstractTableModel{
 					}else{
 						GUIKontroler.prikaziPorukuGreske("Upisani datum mora biti u formatu: 'dd.MM.yyyy.' (npr. '02.08.1970.')");
 					}
-				} catch (ParseException e1) {
-					e1.printStackTrace();
+				} catch (Exception e1) {
+					GUIKontroler.prikaziPorukuGreske("Upisani datum mora biti u formatu: 'dd.MM.yyyy.' (npr. '02.08.1970.')");
 				}
 			}
 			break;
