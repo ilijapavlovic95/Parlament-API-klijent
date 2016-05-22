@@ -1,4 +1,4 @@
-package domain;
+package parlament;
 
 import java.util.Date;
 

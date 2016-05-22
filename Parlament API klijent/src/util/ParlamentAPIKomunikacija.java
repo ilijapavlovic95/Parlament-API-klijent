@@ -16,36 +16,36 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import domain.Poslanik;
+import parlament.Poslanik;
 
 public class ParlamentAPIKomunikacija {
 	
-	private static final String membersURL = "http://147.91.128.71:9090/parlament/api/members";
+	private static final String URL = "http://147.91.128.71:9090/parlament/api/members";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	
 	public List<Poslanik> vratiPoslanike() throws ParseException{
 		try {
-			String result = sendGet(membersURL);
+			String stringSaServisa = sendGet(URL);
 
 			Gson gson = new GsonBuilder().create();
-			JsonArray membersJson = gson.fromJson(result, JsonArray.class);
+			JsonArray membersJson = gson.fromJson(stringSaServisa, JsonArray.class);
 
-			LinkedList<Poslanik> members = new LinkedList<Poslanik>();
+			LinkedList<Poslanik> poslanici = new LinkedList<Poslanik>();
 
 			for (int i = 0; i < membersJson.size(); i++) {
 				JsonObject memberJson = (JsonObject) membersJson.get(i);
 
-				Poslanik m = new Poslanik();
-				m.setId(memberJson.get("id").getAsInt());
-				m.setIme(memberJson.get("name").getAsString());
-				m.setPrezime(memberJson.get("lastName").getAsString());
+				Poslanik p = new Poslanik();
+				p.setId(memberJson.get("id").getAsInt());
+				p.setIme(memberJson.get("name").getAsString());
+				p.setPrezime(memberJson.get("lastName").getAsString());
 				if (memberJson.get("birthDate") != null)
-					m.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
+					p.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
 
-				members.add(m);
+				poslanici.add(p);
 			}
 
-			return members;
+			return poslanici;
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
