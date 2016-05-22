@@ -8,12 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 
 import parlament.Poslanik;
+import parlament.gui.models.PoslanikTableModel;
 import util.ParlamentAPIKomunikacija;
 import util.ParlamentJsonUtility;
 
@@ -84,5 +86,22 @@ public class GUIKontroler {
 
 	public static void prikaziPorukuGreske(String poruka) {
 		JOptionPane.showMessageDialog(glavniProzor, poruka + "\nIzmenite unos.","Greska",JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static void upisiUFajl(JTable table, String putanja) throws Exception {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		FileWriter writer = new FileWriter(putanja);
+
+
+		LinkedList<Poslanik> poslanici = new LinkedList<>();
+		
+		for (int i = 0; i < table.getRowCount(); i++) {
+			PoslanikTableModel model = (PoslanikTableModel) table.getModel();
+			Poslanik p = model.getPoslanikByIndex(i);
+			poslanici.add(p);
+		}
+		
+		writer.write(gson.toJson(poslanici));
+		writer.close();
 	}
 }

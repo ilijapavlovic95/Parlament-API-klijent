@@ -83,6 +83,7 @@ public class ParlamentGUI extends JFrame {
 	private TextArea getTextAreaStatus() {
 		if (textAreaStatus == null) {
 			textAreaStatus = new TextArea();
+			textAreaStatus.setEditable(false);
 		}
 		return textAreaStatus;
 	}
@@ -93,10 +94,10 @@ public class ParlamentGUI extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					try {
 						GUIKontroler.ucitajPoslanikeSaServisa();
+						GUIKontroler.azurirajStatus(textAreaStatus, "Poslanici su uspesno ucitani sa servisa.");
 					} catch (Exception e) {
 						GUIKontroler.azurirajStatus(textAreaStatus, "Desila se greska. Pokusajte ponovo.");
 					}
-					GUIKontroler.azurirajStatus(textAreaStatus, "Poslanici su uspesno ucitani sa servisa.");
 				}
 			});
 			btnGetMembers.setPreferredSize(new Dimension(140, 23));
@@ -110,10 +111,10 @@ public class ParlamentGUI extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					try {
 						osveziTabelu();
+						GUIKontroler.azurirajStatus(textAreaStatus, "Tabela je popunjena podacima preuzetih sa servisa.");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					GUIKontroler.azurirajStatus(textAreaStatus, "Tabela je popunjena podacima preuzetih sa servisa.");
 				}
 			});
 			btnFillTable.setPreferredSize(new Dimension(140, 23));
@@ -123,6 +124,17 @@ public class ParlamentGUI extends JFrame {
 	private JButton getBtnUpdateMembers() {
 		if (btnUpdateMembers == null) {
 			btnUpdateMembers = new JButton("Update members");
+			btnUpdateMembers.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						GUIKontroler.upisiUFajl(table, "data/updatedMembers.json");
+						GUIKontroler.azurirajStatus(textAreaStatus, "Poslanici sa svim izmenama su uspesno sacuvani u novi fajl.");
+					} catch (Exception e) {
+						GUIKontroler.azurirajStatus(textAreaStatus, "Greska prilikom upisivanja.");
+
+					}
+				}
+			});
 			btnUpdateMembers.setPreferredSize(new Dimension(140, 23));
 		}
 		return btnUpdateMembers;

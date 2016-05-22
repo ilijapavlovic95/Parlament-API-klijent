@@ -91,6 +91,9 @@ public class PoslanikTableModel extends AbstractTableModel{
 			if(value instanceof String){
 				String datum = (String) value;
 				try {
+					if(datum.equals("nepoznat"))
+						break;
+					
 					if(datum.charAt(2) == '.' && datum.charAt(5) == '.' && datum.charAt(10) == '.'){
 						p.setDatumRodjenja(sdf.parse(datum));
 					}else{
@@ -117,6 +120,10 @@ public class PoslanikTableModel extends AbstractTableModel{
 	public void ucitajPoslanikeUTabelu(List<Poslanik> poslanici){
 		this.poslanici = poslanici;
 		fireTableDataChanged();
+	}
+	
+	public Poslanik getPoslanikByIndex(int index){
+		return poslanici.get(index);
 	}
 
 }
