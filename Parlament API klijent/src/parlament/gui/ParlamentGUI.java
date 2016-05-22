@@ -10,14 +10,17 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import parlament.gui.models.PoslanikTableModel;
+
 import java.awt.Dimension;
 import java.awt.TextArea;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class ParlamentGUI extends JFrame {
@@ -86,6 +89,16 @@ public class ParlamentGUI extends JFrame {
 	private JButton getBtnGetMembers() {
 		if (btnGetMembers == null) {
 			btnGetMembers = new JButton("GET members");
+			btnGetMembers.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						GUIKontroler.ucitajPoslanikeSaServisa();
+					} catch (Exception e) {
+						GUIKontroler.azurirajStatus(textAreaStatus, "Desila se greska. Pokusajte ponovo.");
+					}
+					GUIKontroler.azurirajStatus(textAreaStatus, "Poslanici su uspesno ucitani sa servisa.");
+				}
+			});
 			btnGetMembers.setPreferredSize(new Dimension(140, 23));
 		}
 		return btnGetMembers;
@@ -93,6 +106,16 @@ public class ParlamentGUI extends JFrame {
 	private JButton getBtnFillTable() {
 		if (btnFillTable == null) {
 			btnFillTable = new JButton("Fill table");
+			btnFillTable.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						osveziTabelu();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					GUIKontroler.azurirajStatus(textAreaStatus, "Tabela je popunjena podacima preuzetih sa servisa.");
+				}
+			});
 			btnFillTable.setPreferredSize(new Dimension(140, 23));
 		}
 		return btnFillTable;
@@ -114,7 +137,14 @@ public class ParlamentGUI extends JFrame {
 	private JTable getTable() {
 		if (table == null) {
 			table = new JTable();
+			PoslanikTableModel model = new PoslanikTableModel(null);
+			table.setModel(model);
 		}
 		return table;
+	}
+	
+	private void osveziTabelu() throws Exception{
+		PoslanikTableModel model = (PoslanikTableModel) table.getModel();
+		model.ucitajPoslanikeUTabelu(GUIKontroler.prebaciIzJsonUListu());
 	}
 }

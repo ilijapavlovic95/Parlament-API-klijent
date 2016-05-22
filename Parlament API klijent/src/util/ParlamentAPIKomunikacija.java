@@ -23,7 +23,7 @@ public class ParlamentAPIKomunikacija {
 	private static final String URL = "http://147.91.128.71:9090/parlament/api/members";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	
-	public List<Poslanik> vratiPoslanike() throws ParseException{
+	public static List<Poslanik> vratiPoslanike() throws ParseException{
 		try {
 			String stringSaServisa = sendGet(URL);
 
@@ -55,7 +55,7 @@ public class ParlamentAPIKomunikacija {
 		return new LinkedList<Poslanik>();
 	}
 
-	private String sendGet(String url) throws IOException {
+	private static String sendGet(String url) throws IOException {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
